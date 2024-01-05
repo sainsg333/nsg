@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main" style="display: flex;flex-direction: column;">
+        <div class="concatination">
+            <h1>Concatination</h1>
+            <h3>client</h3>
+            <pre>
+import java.io.*;
+import java.net.*;
+
+public class concatclient {
+    public static void main(String[] args)throws Exception {
+        String serverAddress = "127.0.0.1";
+        int serverPort = 12345;
+
+        try {
+            Socket socket = new Socket(serverAddress, serverPort);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+            System.out.print("Enter the first string:");
+            String string1 = userInput.readLine();
+            System.out.print("Enter the second string:");
+            String string2 = userInput.readLine();
+            writer.println(string1);
+            writer.println(string2);
+            String concatenatedString = reader.readLine();
+            System.out.println("Concatenated string: " + concatenatedString);
+            socket.close();
+        }
+         catch (IOException e) {
+            System.err.println("Error: There was an issue with the network connection.");
+            e.printStackTrace();
+ }
+}
+}
+            </pre>
+            <h3>server</h3>
+            <pre>
+                import java.io.*;
+                import java.net.*;
+                
+                public class concatserver {
+                    public static void main(String[] args)throws Exception {
+                        int port = 12345;
+                            ServerSocket serverSocket = new ServerSocket(port);
+                            System.out.println("Server listening on port " + port);
+                            while (true) {
+                                Socket clientSocket = serverSocket.accept();
+                                System.out.println("Accepted connection from " + clientSocket.getInetAddress());
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+                                String string1 = reader.readLine();
+                                String string2 = reader.readLine();
+                                String concatenatedString = string1 + string2;
+                                writer.println(concatenatedString);
+                                clientSocket.close();
+                            serverSocket.close();
+                 }
+                }
+                }
+                
+            </pre>
+        </div>
+        <hr>
+        <div class="Factorial">
+            <h1>Factorial</h1>
+            <h3>client</h3>
+            <pre>
+                import java.io.*;
+                import java.net.*;
+                
+                public class factclient {
+                    public static void main(String[] args)throws Exception {
+                        String serverIP = "localhost";
+                        int serverPort = 12345; 
+                            Socket socket = new Socket(serverIP, serverPort);
+                            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+                            int number;
+                            System.out.print("Enter an integer: ");
+                            number = Integer.parseInt(userInput.readLine());
+                            out.println(number);
+                            String result = in.readLine();
+                            System.out.println("Server response: " + result);
+                            socket.close();
+                }
+                }
+                
+            </pre>
+            <h3>server</h3>
+            <pre>
+                import java.io.*;
+                import java.net.*;
+                import java.math.BigInteger;
+                public class factserver {
+                    public static void main(String[] args)throws Exception {
+                        int port = 12345; 
+                        ServerSocket serverSocket = new ServerSocket(port);
+                            System.out.println("Server is listening on port " + port);
+                
+                            while (true) {
+                                Socket clientSocket = serverSocket.accept();
+                                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                                    System.out.println("Connected to client: " + clientSocket.getInetAddress());
+                                    int number = Integer.parseInt(in.readLine());
+                                    BigInteger factorial = calculateFactorial(number);
+                                    out.println("Factorial of " + number + " is: " + factorial);
+                                    serverSocket.close();
+                                     }
+                                    }
+                
+                    public static BigInteger calculateFactorial(int n) {
+                        if (n == 0 || n == 1) {
+                            return BigInteger.ONE;
+                        } else {
+                            return BigInteger.valueOf(n).multiply(calculateFactorial(n - 1));
+                 }
+                }}
+                
+            </pre>
+        </div>
+        <hr>
+        <div class="Reverse">
+            <h1>Reverse</h1>
+            <h3>client</h3>
+            <pre>
+                import java.io.*;
+                import java.net.*;
+                public class StringReverseClient {
+                    public static void main(String[] args) {
+                        try {
+                            Socket socket = new Socket("localhost", 12345); 
+                            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+                            System.out.print("Enter a string: ");
+                            String inputStr = userInput.readLine();
+                            out.println(inputStr);
+                            String reversedStr = in.readLine();
+                            System.out.println("Reversed string: " + reversedStr);
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
+                }
+                
+                
+            </pre>
+            <h3>server</h3>
+            <pre>
+                import java.io.*;
+                import java.net.*;
+                
+                public class StringReverseServer {
+                    public static void main(String[] args)throws Exception {
+                            ServerSocket serverSocket = new ServerSocket(12345); 
+                            System.out.println("Server listening on port 12345...");
+                            while (true) {
+                                Socket clientSocket = serverSocket.accept();
+                                System.out.println("Client connected: " + clientSocket.getInetAddress());
+                                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                                String inputStr = in.readLine();
+                                String reversedStr = new StringBuilder(inputStr).reverse().toString();
+                                out.println(reversedStr);
+                                clientSocket.close();   
+                                serverSocket.close();
+                }
+                }
+                }
+                
+            </pre>
+        </div>
+        <hr>
+        <div class="dotdict">
+            <h1>DotDict</h1>
+            <pre>
+from cloudmesh.common.dotdict import dotdict
+data = {
+"name": "Gregor"
+}
+data = dotdict(data)
+data["name"]
+if data.name =="Gregor":
+    print("this is quite readable")
+            </pre>
+        </div>
+        <hr>
+        <div class="flatdict">
+            <h1>FlatDict</h1>
+            <pre>
+                from cloudmesh.common.FlatDict import FlatDict
+                data = {
+                "name": "Gregor",
+                "address": {
+                "city": "Bloomington",
+                "state": "IN"
+                }
+                }
+                flat = FlatDict(data, sep=".")
+                print(flat)
+            </pre>
+        </div>
+        <hr>
+        <div class="stopwatch">
+            <h1>stopwatch</h1>
+            <pre>
+                from cloudmesh.common.FlatDict import FlatDict
+                data = {
+                "name": "Gregor",
+                "address": {
+                "city": "Bloomington",
+                "state": "IN"
+                }
+                }
+                flat = FlatDict(data, sep=".")
+                print(flat)
+            </pre>
+        </div>
+        <hr>
+
+        <div class="picloud">
+            <h1>Pi-Cloud</h1>
+            <pre>
+import os
+import random
+import hashlib
+import string
+import enchant  # Rainbow tables with enchant
+import pycloud  # importing pi-cloud
+
+def randomword(length):
+    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+
+print('Author- Radhika Subramanian')
+
+def mainroutine():
+    engdict = enchant.Dict("en_US")
+    fileb = open("password.txt", "a+")
+
+    while True:
+        randomword0 = randomword(6)
+        if engdict.check(randomword0):
+            randomkey0 = randomword0 + str(random.randint(0, 99))
+        else:
+            englist = engdict.suggest(randomword0)
+            if len(englist) > 0:
+                randomkey0 = englist[0] + str(random.randint(0, 99))
+            else:
+                randomkey0 = randomword0 + str(random.randint(0, 99))
+
+        randomword3 = randomword(5)
+        if engdict.check(randomword3):
+            randomkey3 = randomword3 + str(random.randint(0, 99))
+        else:
+            englist = engdict.suggest(randomword3)
+            if len(englist) > 0:
+                randomkey3 = englist[0] + str(random.randint(0, 99))
+            else:
+                randomkey3 = randomword3 + str(random.randint(0, 99))
+      
+        randomkey1 = randomword(7)
+
+        # Write data to the file within the loop
+        whasher0 = hashlib.new("md5")
+        whasher0.update(randomkey0.encode())
+        whasher3 = hashlib.new("md5")
+        whasher3.update(randomkey3.encode())
+        whasher1 = hashlib.new("md5")
+        whasher1.update(randomkey1.encode())
+        fileb.write(randomkey0 + " + " + str(whasher0.hexdigest()) + "\n")
+        fileb.write(randomkey3 + " + " + str(whasher3.hexdigest()) + "\n")
+        fileb.write(randomkey1 + " + " + str(whasher1.hexdigest()) + "\n")
+        fileb.flush()  # Flush the buffer to ensure data is written
+
+print('Value added to cloud')
+print('Password added')
+mainroutine()
+
+            </pre>
+        </div>
+        <hr>
+        <div class="FCFS">
+            <h1>FCFS</h1>
+            <pre>
+import java.util.*;
+public class FCFS {
+    public static void main(String[] args) {
+        // Example usage
+        List<Integer> burstTimes = Arrays.asList(10, 5, 8, 12);
+        fcfs(burstTimes);
+    }
+
+    public static void fcfs(List<Integer> burstTimes) {
+        int n = burstTimes.size();
+        int[] completionTime = new int[n];
+        int[] waitingTime = new int[n];
+        int[] turnaroundTime = new int[n];
+
+        // Calculate completion time
+        completionTime[0] = burstTimes.get(0);
+        for (int i = 1; i < n; i++) {
+            completionTime[i] = completionTime[i - 1] + burstTimes.get(i);
+        }
+
+        // Calculate waiting time and turnaround time
+        for (int i = 0; i < n; i++) {
+            turnaroundTime[i] = completionTime[i];
+            waitingTime[i] = turnaroundTime[i] - burstTimes.get(i);
+        }
+
+        // Display results
+        System.out.println("Process\tBurst Time\tWaiting Time\tTurnaround Time");
+        for (int i = 0; i < n; i++) {
+            System.out.println((i + 1) + "\t\t" + burstTimes.get(i) + "\t\t" + waitingTime[i] + "\t\t" + turnaroundTime[i]);
+        }
+    }
+}
+
+            </pre>
+        </div>
+        <hr>
+        <div class="SJF">
+            <h1>SJF</h1>
+        <pre>
+import java.util.*;
+
+public class SJF {
+    public static void main(String[] args) {
+        // Example usage
+        List<Integer> burstTimes = Arrays.asList(6, 8, 7, 3);
+        sjf(burstTimes);
+    }
+
+    public static void sjf(List<Integer> burstTimes) {
+        int n = burstTimes.size();
+        int[] completionTime = new int[n];
+        int[] waitingTime = new int[n];
+        int[] turnaroundTime = new int[n];
+
+        // Sort burst times in ascending order
+        List<Integer> sortedBurstTimes = new ArrayList<>(burstTimes);
+        Collections.sort(sortedBurstTimes);
+
+        // Calculate completion time
+        completionTime[0] = sortedBurstTimes.get(0);
+        for (int i = 1; i < n; i++) {
+            completionTime[i] = completionTime[i - 1] + sortedBurstTimes.get(i);
+        }
+
+        // Map processes to their corresponding completion time
+        Map<Integer, Integer> processCompletionMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            processCompletionMap.put(burstTimes.indexOf(sortedBurstTimes.get(i)), completionTime[i]);
+        }
+
+        // Calculate waiting time and turnaround time using the original order
+        for (int i = 0; i < n; i++) {
+            turnaroundTime[i] = processCompletionMap.get(i);
+            waitingTime[i] = turnaroundTime[i] - burstTimes.get(i);
+        }
+
+        // Display results
+        System.out.println("Process\tBurst Time\tWaiting Time\tTurnaround Time");
+        for (int i = 0; i < n; i++) {
+            System.out.println((i + 1) + "\t\t" + burstTimes.get(i) + "\t\t" + waitingTime[i] + "\t\t" + turnaroundTime[i]);
+        }
+    }
+}
+
+        </pre>
+        </div>
+    </div>
+
+</body>
+</html>
