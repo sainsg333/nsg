@@ -380,7 +380,72 @@ public class SJF {
 
         </pre>
         </div>
-    </div>
+        </div>
+        <div>
+            <h1>DB Designer</h1>
+            <pre>
+                products {
+	id integer pk increments > product_categories.id
+	name varchar
+	price integer
+	description varchar
+	stock boolean
+	category integer
+	image integer
+}
+
+product_options {
+	id integer pk increments > options.id
+	option_id integer
+	product_id integer
+}
+
+options {
+	id integer pk increments
+	option_name varchar
+}
+
+product_categories {
+	id integer pk increments > Categories.id
+	product_id integer
+	catrgory_id integer
+}
+
+Categories {
+	id integer pk increments
+	name varchar
+	description varchar
+}
+
+order_details {
+	id integer pk increments
+	order_id integer
+	product_id integer
+	price integer > orders.id
+	quality integer
+}
+
+orders {
+	id integer pk increments > customers.id
+	cusomer_id integer
+	amount integer
+	shipping_address varchar
+	oder_email varchar
+	order_date date
+	oder_status varchar
+}
+
+customers {
+	id integer pk
+	email varchar
+	password varchar
+	full_name varchar
+	billing_address varchar
+	country varchar
+	phone integer
+}
+            </pre>
+        </div>
 
 </body>
 </html>
