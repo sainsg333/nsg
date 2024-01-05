@@ -215,16 +215,14 @@ if data.name =="Gregor":
         <div class="stopwatch">
             <h1>stopwatch</h1>
             <pre>
-                from cloudmesh.common.FlatDict import FlatDict
-                data = {
-                "name": "Gregor",
-                "address": {
-                "city": "Bloomington",
-                "state": "IN"
-                }
-                }
-                flat = FlatDict(data, sep=".")
-                print(flat)
+from cloudmesh.common.StopWatch import StopWatch
+from time import sleep
+StopWatch.start("test")
+sleep(1)
+StopWatch.stop("test")
+print (StopWatch.get("test"))
+StopWatch.benchmark()
+
             </pre>
         </div>
         <hr>
